@@ -10,10 +10,10 @@ function formSubmitListener() {
 function clickedSubmit(e) {
     e.preventDefault();
     const inputText = document.querySelector('input#search')
-    console.log(inputText.value)
     // get username
     // pass username to get fetch function
     requestUserName(inputText.value)
+    e.target.reset();
 }
 // send request to git hub
 async function requestUserName(userName) {
@@ -70,6 +70,8 @@ function displayRepoLink(login, ul){
     newLi.innerText = userName
     // adds class to li
     newLi.classList.add('repo')
+    // adds id to li
+    newLi.setAttribute('id',`${login}`)
     // add li to user-list
     ul.append(newLi)
     repoClickListener();
@@ -96,27 +98,25 @@ async function requestUserRepo(repoName,e) {
     .then(data => displayRepoInfo(data,e))
 }
 function displayRepoInfo(arrOfObjs,e) {
-    console.log(e)
+    console.log('this is e ', e)
     // select repos-list ul
-    // possibly change to q s all
-    // then iterate over all the repo li's
-    
-    // compare innertextsof 
+    const repoLi = document.querySelector('.repo')
     // iterate over arr
     arrOfObjs.forEach((obj) => {
-        const repoLi = document.querySelector('.repo')
-        // when clicking repo li
-            // it needs to be specified which user was clicked on
-            
+    
+        // use li with an id that was created in using login
+        // use back ticks to interpolate name into the selector
+        let name = e.target.id
+        const uniqueLi = document.querySelector(`#${name}`)            
         // create li 
         const newLi = document.createElement('li')
         // put current value of the iteration in innertext of li
         newLi.innerText = obj.name;
-        // add li to ul
-        repoLi.append(newLi)
+        // add unique li to ul
+        uniqueLi.append(newLi)
+        // adds padding values from top, right, bottom, left
+        uniqueLi.style.padding = "20px 0px 20px 0px";
     })
-    repoLi.append(document.createElement('p'))
-    repoLi.append(document.createElement('p'))    
 
     }
 
